@@ -4,7 +4,7 @@ import org.kolokolov.model.Entity
 import scala.concurrent.Future
 
 /**
-  * Created by andersen on 10.05.2017.
+  * Created by Kolokolov on 10.05.2017.
   */
 trait EntityCRUDModule {
 
