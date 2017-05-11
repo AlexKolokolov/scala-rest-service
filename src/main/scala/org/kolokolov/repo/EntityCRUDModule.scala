@@ -40,5 +40,10 @@ trait EntityCRUDModule {
       val deleteAction = dataTable.filter(_.id === id).delete
       database.run(deleteAction)
     }
+
+    def update(entity: Entity): Future[Int] = {
+      val updateAction = dataTable.filter(_.id === entity.id).update(entity)
+      database.run(updateAction)
+    }
   }
 }
