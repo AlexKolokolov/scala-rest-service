@@ -8,7 +8,7 @@ import scala.concurrent.Future
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class DBTestHelper extends EntityCRUDModule {
+class TestDBCreator extends EntityCRUDModule {
 
   this: DatabaseProfile =>
 
