@@ -16,4 +16,5 @@ class EntityService extends EntityCRUDModule {
   def getEntityById(id: Int): Future[Option[Entity]] = EntityCRUD.getById(id)
   def saveEntity(entity: Entity): Future[Int] = EntityCRUD.save(entity)
   def deleteEntity(id: Int): Future[Int] = EntityCRUD.delete(id)
+  def updateEntity(entity: Entity): Future[Int] = EntityCRUD.update(entity)
 }
