@@ -3,6 +3,7 @@ package org.kolokolov.service
 import org.kolokolov.model.Entity
 import org.kolokolov.repo.H2Database
 import org.scalatest.{AsyncFunSuite, BeforeAndAfterEach, Matchers}
+import slick.jdbc.H2Profile
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -14,9 +15,9 @@ class EntityServiceTest extends AsyncFunSuite
   with Matchers
   with BeforeAndAfterEach {
 
-  private val entityService = new EntityService with H2Database
+  private val entityService = new EntityService(H2Profile)
 
-  private val dbTestHelper = new DBTestHelper with H2Database
+  private val dbTestHelper = new TestDBCreator with H2Database
 
   override def beforeEach: Unit = {
     Await.result(dbTestHelper.setupDB, Duration.Inf)

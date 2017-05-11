@@ -1,4 +1,4 @@
-package org.kolokolov.service
+package org.kolokolov.rest
 
 import org.kolokolov.model.Entity
 import org.kolokolov.repo.{DatabaseProfile, EntityCRUDModule}
@@ -8,7 +8,7 @@ import scala.concurrent.Future
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class DBTestHelper extends EntityCRUDModule {
+class DBCreator extends EntityCRUDModule {
 
   this: DatabaseProfile =>
 
@@ -17,7 +17,15 @@ class DBTestHelper extends EntityCRUDModule {
   def setupDB: Future[Unit] = {
     val setup = DBIO.seq(
       EntityCRUD.dataTable.schema.create,
-      EntityCRUD.dataTable ++= Seq(Entity("Mercury"), Entity("Venus"))
+      EntityCRUD.dataTable ++= Seq(
+        Entity("Mercury"),
+        Entity("Venus"),
+        Entity("Earth"),
+        Entity("Mars"),
+        Entity("Jupiter"),
+        Entity("Saturn"),
+        Entity("Uranus"),
+        Entity("Neptune"))
     ).transactionally
     database.run(setup)
   }

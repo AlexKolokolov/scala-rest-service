@@ -2,15 +2,14 @@ package org.kolokolov.service
 
 import org.kolokolov.model.Entity
 import org.kolokolov.repo.{DatabaseProfile, EntityCRUDModule}
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class EntityService extends EntityCRUDModule {
-
-  this: DatabaseProfile =>
+class EntityService(override val profile: JdbcProfile) extends EntityCRUDModule with DatabaseProfile{
 
   def getAllEntities: Future[Seq[Entity]] = EntityCRUD.getAll
   def getEntityById(id: Int): Future[Option[Entity]] = EntityCRUD.getById(id)
