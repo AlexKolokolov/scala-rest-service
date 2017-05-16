@@ -5,7 +5,7 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.kolokolov.model.Entity
 import org.kolokolov.repo.H2Database
 import org.kolokolov.rest.{JsonSupport, RestController}
-import org.kolokolov.service.{EntityService, TestDBCreator}
+import org.kolokolov.service.{CarService, TestDBCreator}
 import org.scalatest.{BeforeAndAfterEach, FunSuite, Matchers}
 import akka.http.scaladsl.model._
 import slick.jdbc.H2Profile
@@ -22,9 +22,9 @@ class RestServiceTest extends FunSuite
   with BeforeAndAfterEach
   with JsonSupport{
 
-  private val route = new RestController(new EntityService(H2Profile), ActorSystem("test-actor-system")).route
+  private val route = new RestController(new CarService(H2Profile), ActorSystem("test-actor-system")).route
 
-  val dbTestHelper = new TestDBCreator with H2Database
+  val dbTestHelper = new TestDBCreator
 
   override def beforeEach: Unit = {
     Await.result(dbTestHelper.setupDB, Duration.Inf)

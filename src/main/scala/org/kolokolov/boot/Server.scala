@@ -5,7 +5,7 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import org.kolokolov.repo.H2Database
 import org.kolokolov.rest.{DBCreator, RestController}
-import org.kolokolov.service.EntityService
+import org.kolokolov.service.CarService
 import slick.jdbc.H2Profile
 
 import scala.concurrent.Await
@@ -22,7 +22,7 @@ object Server {
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
-  val restController = new RestController(new EntityService(H2Profile), system)
+  val restController = new RestController(new CarService(H2Profile), system)
   val dbHelper = new DBCreator with H2Database
 
   def main(args: Array[String]) {

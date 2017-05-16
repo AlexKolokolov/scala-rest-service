@@ -1,14 +1,14 @@
 package org.kolokolov.rest
 
-import org.kolokolov.model.Entity
-import org.kolokolov.repo.{DatabaseProfile, EntityCRUDModule}
+import org.kolokolov.model.{BodyType, Car}
+import org.kolokolov.repo.{BodyTypeCRUDModule, CarCRUDModule, DatabaseProfile}
 
 import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class DBCreator extends EntityCRUDModule {
+class DBCreator extends CarCRUDModule with BodyTypeCRUDModule {
 
   this: DatabaseProfile =>
 
@@ -16,22 +16,19 @@ class DBCreator extends EntityCRUDModule {
 
   def setupDB: Future[Unit] = {
     val setup = DBIO.seq(
-      EntityCRUD.dataTable.schema.create,
-      EntityCRUD.dataTable ++= Seq(
-        Entity("Mercury"),
-        Entity("Venus"),
-        Entity("Earth"),
-        Entity("Mars"),
-        Entity("Jupiter"),
-        Entity("Saturn"),
-        Entity("Uranus"),
-        Entity("Neptune"))
+      BodyTypeCRUD.dataTable.schema.create,
+      CarCRUD.dataTable.schema.create,
+      BodyTypeCRUD.dataTable ++= Seq(BodyType("sedan"), BodyType("Hatchback")),
+      CarCRUD.dataTable ++= Seq(Car("Toyota", "Camry", 1), Car("Toyota", "Prius", 2))
     ).transactionally
     database.run(setup)
   }
 
   def cleanDB: Future[Unit] = {
-    val dropTables = DBIO.seq(EntityCRUD.dataTable.schema.drop)
+    val dropTables = DBIO.seq(
+      CarCRUD.dataTable.schema.drop,
+      BodyTypeCRUD.dataTable.schema.drop
+    ).transactionally
     database.run(dropTables)
   }
 }
