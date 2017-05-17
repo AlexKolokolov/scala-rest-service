@@ -1,6 +1,7 @@
 package org.kolokolov.service
 
-import org.kolokolov.model.Car
+import org.kolokolov.model.User
+import org.kolokolov.repo.H2Database
 import org.scalatest.{AsyncFunSuite, BeforeAndAfterEach, Matchers}
 import slick.jdbc.H2Profile
 
@@ -10,13 +11,13 @@ import scala.concurrent.duration.Duration
 /**
   * Created by Kolokolov on 5/10/17.
   */
-class CarServiceTest extends AsyncFunSuite
+class UserServiceTest extends AsyncFunSuite
   with Matchers
   with BeforeAndAfterEach {
 
-  private val entityService = new CarService(H2Profile)
+  private val userService = new UserService(H2Profile)
 
-  private val dbTestHelper = new TestDBCreator
+  private val dbTestHelper = new TestDBCreator with H2Database
 
   override def beforeEach: Unit = {
     Await.result(dbTestHelper.setupDB, Duration.Inf)
@@ -26,10 +27,9 @@ class CarServiceTest extends AsyncFunSuite
     Await.result(dbTestHelper.cleanDB, Duration.Inf)
   }
 
-  test("getAllEntities should return Seq(Car(Toyota, Camry, 1, 1), Car(Toyota, Prius, 2, 2))") {
-    entityService.getAllCars.map {
-      result => result shouldEqual Seq(Car("Toyota", "Camry", 1,1), Car("Toyota", "Prius", 2,2))
+  test("getAllEntities should return Seq(User(Bob Marley,1), User(Tom Waits,2), User(Guy Pearce,3))") {
+    userService.getAllUsers.map {
+      result => result shouldEqual Seq(User("Bob Marley",1), User("Tom Waits",2), User("Guy Pearce",3))
     }
   }
-
 }
