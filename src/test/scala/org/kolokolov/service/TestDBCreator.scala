@@ -29,9 +29,9 @@ class TestDBCreator extends UserCRUDModule with MessageCRUDModule with CommentCR
 
   def cleanDB: Future[Unit] = {
     val dropTables = DBIO.seq(
-      UserCRUD.dataTable.schema.drop,
+      CommentCRUD.dataTable.schema.drop,
       MessageCRUD.dataTable.schema.drop,
-      CommentCRUD.dataTable.schema.drop
+      UserCRUD.dataTable.schema.drop
     ).transactionally
     database.run(dropTables)
   }

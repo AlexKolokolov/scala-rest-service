@@ -1,5 +1,7 @@
 package org.kolokolov.repo
 
+import org.kolokolov.model.Identifiable
+
 import scala.concurrent.Future
 
 /**

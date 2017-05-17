@@ -37,5 +37,16 @@ trait CommentCRUDModule extends AbstractCRUDModule {
       val getCommentsByMessageIdAction = dataTable.filter(_.messageId === messageId).result
       database.run(getCommentsByMessageIdAction)
     }
+
+    def deleteUsersCommentToMessage(userId: Int, messageId: Int, commentId: Int): Future[Int] = {
+      val deleteUsersCommentToMessageAction = dataTable.filter(_.authorId === userId).
+        filter(_.messageId === messageId).filter(_.id === commentId).delete
+      database.run(deleteUsersCommentToMessageAction)
+    }
+
+    def deleteUsersComment(userId: Int, commentId: Int): Future[Int] = {
+      val deleteUsersCommentAction = dataTable.filter(_.authorId === userId).filter(_.id === commentId).delete
+      database.run(deleteUsersCommentAction)
+    }
   }
 }

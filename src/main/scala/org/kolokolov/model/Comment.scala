@@ -1,7 +1,5 @@
 package org.kolokolov.model
 
-import org.kolokolov.repo.Identifiable
-
 /**
   * Created by Kolokolov on 17.05.2017.
   */

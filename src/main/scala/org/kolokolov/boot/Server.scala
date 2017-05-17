@@ -22,7 +22,11 @@ object Server {
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
-  val restController = new RestController(new UserService(H2Profile), new MessageService(H2Profile), new CommentService(H2Profile), system)
+  val userService = new UserService(H2Profile)
+  val messageService = new MessageService(H2Profile)
+  val commentService = new CommentService(H2Profile)
+
+  val restController = new RestController(userService, messageService, commentService, system)
   val dbHelper = new DBCreator with H2Database
 
   def main(args: Array[String]) {
@@ -33,6 +37,7 @@ object Server {
 
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
+
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => system.terminate()) // and shutdown when done
