@@ -29,7 +29,7 @@ class MessageServiceTest extends AsyncFunSuite
     Await.result(dbTestHelper.cleanDB, Duration.Inf)
   }
 
-  test("getAllUsers should return Seq[Message] with length 4") {
+  test("getAllMessages should return Seq[Message] with length 4") {
     getAllMessages.map { result =>
       result.length shouldEqual 4
     }
