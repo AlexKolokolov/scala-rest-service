@@ -36,7 +36,7 @@ trait MessageCRUDModule extends AbstractCRUDModule {
     }
 
     def updateUsersMessage(message: Message): Future[Int] = {
-      val updateUsersMessageAction = dataTable.filter(_.authorId === message.authorId).filter(_.id === message.id).delete
+      val updateUsersMessageAction = dataTable.filter(_.authorId === message.authorId).filter(_.id === message.id).update(message)
       database.run(updateUsersMessageAction)
     }
 
