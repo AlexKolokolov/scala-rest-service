@@ -21,7 +21,7 @@ class RestServiceTest extends FunSuite
   with BeforeAndAfterEach
   with JsonSupport{
 
-  private val route = new RestController(new UserService(H2Profile), new MessageService(H2Profile), new CommentService(H2Profile), ActorSystem("test-actor-system")).route
+  private val route = new RestController(new UserService(H2Profile), new MessageService(H2Profile), new CommentService(H2Profile), ActorSystem("test-actor-system")).rootRoute
 
   val dbTestHelper = new TestDBCreator with H2Database
 

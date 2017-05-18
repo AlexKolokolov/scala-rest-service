@@ -19,7 +19,6 @@ object Server {
 
   implicit val system = ActorSystem("rest-service-actor-system")
   implicit val materializer = ActorMaterializer()
-  // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
   val userService = new UserService(H2Profile)
@@ -33,7 +32,7 @@ object Server {
 
     Await.result(dbHelper.setupDB, Duration.Inf)
 
-    val bindingFuture = Http().bindAndHandle(restController.route, "localhost", 8080)
+    val bindingFuture = Http().bindAndHandle(restController.rootRoute, "localhost", 8080)
 
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return

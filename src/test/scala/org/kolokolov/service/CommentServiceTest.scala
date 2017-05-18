@@ -47,81 +47,63 @@ class CommentServiceTest extends AsyncFunSuite
     }
   }
 
-//  test("getMessageById(1) should return None after deleteMessage(1)") {
-//    deleteMessage(1).flatMap { delResult =>
-//        delResult shouldEqual 1
-//        getMessageById(1).map { result =>
-//          result shouldEqual None
-//      }
-//    }
-//  }
-//
-//  test("deleteMessage(5) should return 0)") {
-//    deleteMessage(5).map {
-//      result => result shouldEqual 0
-//    }
-//  }
-//
-//  test("getMessagesByAuthorId(1) should return Seq[Message] with length 2") {
-//    getMessagesByAuthorId(1).map { result =>
-//      result.length shouldEqual 2
-//    }
-//  }
-//
-//  test("getMessagesByAuthorId(4) should return empty Seq[Message]") {
-//    getMessagesByAuthorId(4).map { result =>
-//      result shouldEqual Seq.empty
-//    }
-//  }
-//
-//  test("getMessagesById(4) should return Seq[Message] of length 2 after saveMessage(Message(Never say never!, 3))") {
-//    saveMessage(Message("Never say never!", 3)).flatMap { saveResult =>
-//      saveResult shouldEqual 1
-//      getMessagesByAuthorId(3).map { result =>
-//        result.length shouldEqual 2
-//      }
-//    }
-//  }
-//
-//  test("getMessagesById(4) should return Seq(Message(Never say never!,3,4)) after updateUsersMessage(Message(Never say never!,3,4))") {
-//    updateUsersMessage(Message("Never say never!", 3, 4)).flatMap { saveResult =>
-//      saveResult shouldEqual 1
-//      getMessagesByAuthorId(3).map { result =>
-//        result shouldEqual Seq(Message("Never say never!", 3, 4))
-//      }
-//    }
-//  }
-//
-//  test("updateUsersMessage(Message(Never say never!,2,4)) should equal 0") {
-//    updateUsersMessage(Message("Never say never!",2,4)).map { saveResult =>
-//      saveResult shouldEqual 0
-//    }
-//  }
-//
-//  test("getUsersMessageById(1,1) should return Some(Message(Rock sucks!,1,1))") {
-//    getUsersMessageById(1,1).map { result =>
-//      result shouldEqual Some(Message("Rock sucks!",1,1))
-//    }
-//  }
-//
-//  test("getUsersMessageById(1,4) should return None") {
-//    getUsersMessageById(1,4).map { result =>
-//      result shouldEqual None
-//    }
-//  }
-//
-//  test("getMessagesByAuthorId(3) should return empty Seq[Message] after deleteUsersMessage(3,4)") {
-//    deleteUsersMessage(3,4).flatMap { delResult =>
-//      delResult shouldEqual 1
-//      getMessagesByAuthorId(3).map { result =>
-//        result shouldEqual Seq.empty
-//      }
-//    }
-//  }
-//
-//  test("deleteUsersMessage(1,4) should return 0") {
-//    deleteUsersMessage(1,4).map { delResult =>
-//      delResult shouldEqual 0
-//    }
-//  }
+  test("getCommentById(5) should return Some(Message(Great news!,3,3,5)) after saveComment(Comment(Great news!,3,3))") {
+    saveComment(Comment("Great news!",3,3)).flatMap { saveResult =>
+      saveResult shouldEqual 1
+      getCommentById(5).map { result =>
+        result shouldEqual Some(Comment("Great news!",3,3,5))
+      }
+    }
+  }
+
+  test("getComment(1) should return None after deleteComment(1)") {
+    deleteComment(1).flatMap { deleteResult =>
+      deleteResult shouldEqual 1
+      getCommentById(1).map { result =>
+        result shouldEqual None
+      }
+    }
+  }
+
+  test("deleteComment(5) should return 0") {
+    deleteComment(5).map { deleteResult =>
+      deleteResult shouldEqual 0
+    }
+  }
+
+  test("deleteUsersComment(1,1) should return 0") {
+    deleteUsersComment(1,1).map { deleteResult =>
+      deleteResult shouldEqual 0
+    }
+  }
+
+  test("getCommentsByAuthorId(1) should return empty Seq[Comment] after deleteUsersComment(1,4)") {
+    deleteUsersComment(1,4).flatMap { deleteResult =>
+      deleteResult shouldEqual 1
+      getCommentsByAuthorId(1).map { result =>
+        result shouldEqual Seq.empty
+      }
+    }
+  }
+
+  test("getCommentById(1) should return Some(Comment(Shut up!,1,2,1)) after updateUsersCommentToMessage(Comment(Shut up!,1,2,1)))") {
+    updateUsersCommentToMessage(Comment("Shut up!",1,2,1)).flatMap { updateResult =>
+      updateResult shouldEqual 1
+      getCommentById(1).map { result =>
+        result shouldEqual Some(Comment("Shut up!",1,2,1))
+      }
+    }
+  }
+
+  test("updateUsersCommentToMessage(Comment(Shut up!,1,1,1))) should return 0") {
+    updateUsersCommentToMessage(Comment("Shut up!",1,1,1)).map { updateResult =>
+      updateResult shouldEqual 0
+    }
+  }
+
+  test("getCommentsByAuthorId(1) should return Seq(Comment(Thank you, man!,3,1,4)))") {
+    getCommentsByAuthorId(1).map { result =>
+      result shouldEqual Seq(Comment("Thank you, man!",3,1,4))
+    }
+  }
 }
