@@ -139,7 +139,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
               pathEndOrSingleSlash {
                 get {
                   // GET /webapi/users/1/messages/1/comments - Get all comments to particular message of particular user
-                  val commentsFuture = commentService.getCommentsByMessageId(messageId)
+                  val commentsFuture = commentService.getCommentsByAuthorsMessageId(userId,messageId)
                   onComplete(commentsFuture) {
                     case Success(comments) => complete(comments)
                     case Failure(ex) => {

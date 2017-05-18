@@ -89,4 +89,32 @@ class RestControllerTest extends AsyncFunSuite
       responseAs[String] shouldEqual "User with ID: 4 was not found"
     }
   }
+
+  test("should return all messages of 1 user") {
+    Get("/webapi/users/1/messages") ~> route ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[String] shouldEqual "[{\"text\":\"Rock sucks!\",\"authorId\":1,\"id\":1},{\"text\":\"Good morning to everyone!\",\"authorId\":1,\"id\":2}]"
+    }
+  }
+
+  test("should return 1 message of 1 user") {
+    Get("/webapi/users/1/messages/1") ~> route ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[String] shouldEqual "{\"text\":\"Rock sucks!\",\"authorId\":1,\"id\":1}"
+    }
+  }
+
+  test("should return all comments to 3 message of 2 user") {
+    Get("/webapi/users/2/messages/3/comments") ~> route ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[String] shouldEqual "[{\"text\":\"Great! I love it!\",\"messageId\":3,\"authorId\":3,\"id\":2}]"
+    }
+  }
+
+  test("should return empty array of comments to 1 message of 2 user") {
+    Get("/webapi/users/2/messages/1/comments") ~> route ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[String] shouldEqual "[]"
+    }
+  }
 }

@@ -35,9 +35,9 @@ class CommentServiceTest extends AsyncFunSuite
     }
   }
 
-  test("getCommentById(4) should return Some(Comment(Thank you, man!,3,1,4))") {
+  test("getCommentById(4) should return Some(Comment(Thank you, man!,4,1,4))") {
     getCommentById(4).map { result =>
-      result shouldEqual Some(Comment("Thank you, man!",3,1,4))
+      result shouldEqual Some(Comment("Thank you, man!",4,1,4))
     }
   }
 
@@ -101,9 +101,9 @@ class CommentServiceTest extends AsyncFunSuite
     }
   }
 
-  test("getCommentsByAuthorId(1) should return Seq(Comment(Thank you, man!,3,1,4)))") {
+  test("getCommentsByAuthorId(1) should return Seq(Comment(Thank you, man!,4,1,4)))") {
     getCommentsByAuthorId(1).map { result =>
-      result shouldEqual Seq(Comment("Thank you, man!",3,1,4))
+      result shouldEqual Seq(Comment("Thank you, man!",4,1,4))
     }
   }
 }

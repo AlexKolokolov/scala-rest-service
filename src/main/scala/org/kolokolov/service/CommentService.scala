@@ -19,4 +19,5 @@ class CommentService(override val profile: JdbcProfile) extends CommentCRUDModul
   def updateUsersCommentToMessage(comment: Comment): Future[Int] = CommentCRUD.updateUsersCommentToMessage(comment)
   def getCommentsByAuthorId(authorId: Int): Future[Seq[Comment]] = CommentCRUD.getCommentsByAuthorId(authorId)
   def getCommentsByMessageId(messageId: Int): Future[Seq[Comment]] = CommentCRUD.getCommentsByMessageId(messageId)
+  def getCommentsByAuthorsMessageId(authorId: Int, messageId: Int): Future[Seq[Comment]] = CommentCRUD.getCommentsByAuthorsMessageId(authorId,messageId)
 }
