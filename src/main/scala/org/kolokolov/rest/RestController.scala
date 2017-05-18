@@ -62,8 +62,8 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val updatedUser = userService.updateUser(user)
             onComplete(updatedUser) {
               case Success(n) => n match {
-                case 1 => complete(StatusCodes.Accepted, s"User $user has been updated")
-                case _ => complete(StatusCodes.BadRequest, s"User with ID: ${user.id} not found")
+                case 1 => complete(StatusCodes.ResetContent, s"User with ID: ${user.id} has been updated")
+                case _ => complete(StatusCodes.BadRequest, s"User with ID: ${user.id} was not found")
               }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
@@ -76,12 +76,12 @@ class RestController(val userService: UserService, val messageService: MessageSe
       pathPrefix(IntNumber) { userId =>
         pathEndOrSingleSlash {
           get {
-            // GET /webapi/users - Get all users
+            // GET /webapi/users/1 - Get user by ID
             val userFuture: Future[Option[User]] = userService.getUserById(userId)
             onComplete(userFuture) {
               case Success(optionUser) => optionUser match {
                 case Some(user) => complete(user)
-                case None => complete(StatusCodes.NoContent, s"User with ID: $userId not found")
+                case None => complete(StatusCodes.NotFound, s"User with ID: $userId was not found")
               }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
@@ -94,7 +94,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val deletedUser = userService.deleteUser(userId)
             onComplete(deletedUser) {
               case Success(n) => n match {
-                case 1 => complete(s"User with ID: $userId deleted")
+                case 1 => complete(StatusCodes.Accepted, s"User with ID: $userId has been deleted")
                 case _ => complete(StatusCodes.NotFound, s"User with ID: $userId was not found")
               }
               case Failure(ex) => {
@@ -126,7 +126,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
                 onComplete(messageFuture) {
                   case Success(optionMessage) => optionMessage match {
                     case Some(message) => complete(message)
-                    case None => complete(StatusCodes.NoContent, s"Message with ID: $messageId by user with ID: $userId not found")
+                    case None => complete(StatusCodes.NotFound, s"Message with ID: $messageId by user with ID: $userId not found")
                   }
                   case Failure(ex) => {
                     logger.error(ex.getStackTrace.mkString)
@@ -189,7 +189,10 @@ class RestController(val userService: UserService, val messageService: MessageSe
           entity(as[Message]) { message =>
             val savedMessage: Future[Int] = messageService.saveMessage(message)
             onComplete(savedMessage) {
-              case Success(linesAdded) => complete(s"Message $message have been saved")
+              case Success(linesAdded) => linesAdded match {
+                case 1 => complete(StatusCodes.Created, s"Message $message have been saved")
+                case _ => complete(StatusCodes.BadRequest)
+              }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
                 complete(StatusCodes.InternalServerError)
@@ -203,7 +206,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val updatedMessage = messageService.updateUsersMessage(message)
             onComplete(updatedMessage) {
               case Success(linesAffected) => linesAffected match {
-                case 1 => complete(StatusCodes.Accepted, s"Message $message has been updated")
+                case 1 => complete(StatusCodes.ResetContent, s"Message $message has been updated")
                 case _ => complete(StatusCodes.BadRequest, s"Message with ID: ${message.id} by user with ID : ${message.authorId} was not found")
               }
               case Failure(ex) => {
@@ -222,7 +225,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             onComplete(messageFuture) {
               case Success(optionMessage) => optionMessage match {
                 case Some(message) => complete(message)
-                case None => complete(StatusCodes.NoContent, s"Message with ID: $messageId was not found")
+                case None => complete(StatusCodes.NotFound, s"Message with ID: $messageId was not found")
               }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
@@ -235,7 +238,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val deletedMessage = messageService.deleteMessage(messageId)
             onComplete(deletedMessage) {
               case Success(n) => n match {
-                case 1 => complete(s"Message with ID: $messageId has been deleted")
+                case 1 => complete(StatusCodes.Accepted, s"Message with ID: $messageId has been deleted")
                 case _ => complete(StatusCodes.NotFound, s"Message with ID: $messageId was not found")
               }
               case Failure(ex) => {
@@ -299,7 +302,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val savedComment = commentService.updateUsersCommentToMessage(comment)
             onComplete(savedComment) {
               case Success(linesAdded) => linesAdded match {
-                case 1 => complete(StatusCodes.Created, s"Comment $comment has been updated")
+                case 1 => complete(StatusCodes.ResetContent, s"Comment $comment has been updated")
                 case _ => complete(StatusCodes.BadRequest,
                   s"Comment with ID ${comment.id} by user with ID: ${comment.authorId} to message with ID: ${comment.messageId} was not found")
               }
@@ -318,7 +321,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val deletedComment: Future[Int] = commentService.deleteComment(commentId)
             onComplete(deletedComment) {
               case Success(n) => n match {
-                case 1 => complete(s"Comment with ID: $commentId has been deleted")
+                case 1 => complete(StatusCodes.Accepted, s"Comment with ID: $commentId has been deleted")
                 case _ => complete(StatusCodes.NotFound, s"Comment with ID: $commentId was not found")
               }
               case Failure(ex) => {
