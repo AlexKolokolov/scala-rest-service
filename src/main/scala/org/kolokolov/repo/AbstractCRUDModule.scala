@@ -1,37 +1,37 @@
 package org.kolokolov.repo
 
-import org.kolokolov.model.Entity
+import org.kolokolov.model.Identifiable
+
 import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-trait EntityCRUDModule {
+trait AbstractCRUDModule {
 
   self: DatabaseProfile =>
 
   import profile.api._
 
-  class EntityTable(tag: Tag) extends Table[Entity](tag, "entity_table") {
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name")
-    def * = (name, id) <> (Entity.tupled, Entity.unapply)
+  trait IdentifiableTable[E <: Identifiable] extends Table[E] {
+    def id: Rep[Int]
   }
 
-  object EntityCRUD {
-    lazy val dataTable: TableQuery[EntityTable] = TableQuery[EntityTable]
+  abstract class AbstractCRUD[E <: Identifiable, T <: IdentifiableTable[E]] {
 
-    def getAll: Future[Seq[Entity]] = {
+    protected val dataTable: TableQuery[T]
+
+    def getAll: Future[Seq[E]] = {
       val getAllAction = dataTable.result
       database.run(getAllAction)
     }
 
-    def getById(id: Int): Future[Option[Entity]] = {
+    def getById(id: Int): Future[Option[E]] = {
       val getByIdAction = dataTable.filter(_.id === id).result.headOption
       database.run(getByIdAction)
     }
 
-    def save(entity: Entity): Future[Int] = {
+    def save(entity: E): Future[Int] = {
       val saveAction = dataTable += entity
       database.run(saveAction)
     }
@@ -41,7 +41,7 @@ trait EntityCRUDModule {
       database.run(deleteAction)
     }
 
-    def update(entity: Entity): Future[Int] = {
+    def update(entity: E): Future[Int] = {
       val updateAction = dataTable.filter(_.id === entity.id).update(entity)
       database.run(updateAction)
     }
