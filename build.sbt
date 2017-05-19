@@ -1,7 +1,7 @@
 
 name := "scala-rest-service"
 
-version := "1.0-RELEASE"
+version := "1.1-RELEASE"
 
 scalaVersion := "2.12.2"
 
