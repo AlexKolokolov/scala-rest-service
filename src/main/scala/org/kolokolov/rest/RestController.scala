@@ -190,12 +190,12 @@ class RestController(val userService: UserService, val messageService: MessageSe
             val savedMessage: Future[Int] = messageService.saveMessage(message)
             onComplete(savedMessage) {
               case Success(linesAdded) => linesAdded match {
-                case 1 => complete(StatusCodes.Created, s"Message $message have been saved")
+                case 1 => complete(StatusCodes.Created, s"Message $message has been saved")
                 case _ => complete(StatusCodes.BadRequest)
               }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
-                complete(StatusCodes.InternalServerError)
+                complete(StatusCodes.BadRequest)
               }
             }
           }
@@ -291,7 +291,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
               }
               case Failure(ex) => {
                 logger.error(ex.getStackTrace.mkString)
-                complete(StatusCodes.InternalServerError)
+                complete(StatusCodes.BadRequest)
               }
             }
           }

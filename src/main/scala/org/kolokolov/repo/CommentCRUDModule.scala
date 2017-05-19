@@ -41,7 +41,8 @@ trait CommentCRUDModule extends AbstractCRUDModule {
     def getCommentsByAuthorsMessageId(authorId: Int, messageId: Int): Future[Seq[Comment]] = {
       val getCommentsByAuthorsMessageIdAction = {
         for {
-          (_, c) <- MessageCRUD.dataTable.filter(_.authorId === authorId).filter(_.id === messageId) join dataTable on (_.id === _.messageId)
+          m <- MessageCRUD.dataTable.filter(_.authorId === authorId).filter(_.id === messageId)
+          c <- dataTable if c.messageId === m.id
         } yield c
       }.result
       database.run(getCommentsByAuthorsMessageIdAction)

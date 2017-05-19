@@ -106,4 +106,16 @@ class CommentServiceTest extends AsyncFunSuite
       result shouldEqual Seq(Comment("Thank you, man!",4,1,4))
     }
   }
+
+  test("getCommentsByAuthorsMessageId(2,3) should return Seq(Comment(Great! I love it!,3,3,2))") {
+    getCommentsByAuthorsMessageId(2,3).map { result =>
+      result shouldEqual Seq(Comment("Great! I love it!",3,3,2))
+    }
+  }
+
+  test("getCommentsByAuthorsMessageId(3,3) should return empty Seq[Comment]") {
+    getCommentsByAuthorsMessageId(3,3).map { result =>
+      result shouldEqual Seq.empty
+    }
+  }
 }

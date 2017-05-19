@@ -56,7 +56,7 @@ class MessageServiceTest extends AsyncFunSuite
     }
   }
 
-  test("deleteMessage(5) should return 0)") {
+  test("deleteMessage(5) should return 0") {
     deleteMessage(5).map {
       result => result shouldEqual 0
     }

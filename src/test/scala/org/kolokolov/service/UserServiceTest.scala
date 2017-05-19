@@ -41,7 +41,7 @@ class UserServiceTest extends AsyncFunSuite
     }
   }
 
-  test("getUserById(4) should return None)") {
+  test("getUserById(4) should return None") {
     getUserById(4).map { result =>
       result shouldEqual None
     }
@@ -56,7 +56,7 @@ class UserServiceTest extends AsyncFunSuite
     }
   }
 
-  test("deleteUser(4) should return 0)") {
+  test("deleteUser(4) should return 0") {
     deleteUser(4).map {
       result => result shouldEqual 0
     }
@@ -80,7 +80,7 @@ class UserServiceTest extends AsyncFunSuite
     }
   }
 
-  test("updateUser(User(Marlon Brando, 4)) should return 0)") {
+  test("updateUser(User(Marlon Brando, 4)) should return 0") {
     updateUser(User("Marlon Brando",4)).map { result =>
       result shouldEqual 0
     }
