@@ -1,7 +1,7 @@
 package org.kolokolov.service
 
-import org.kolokolov.model.{Message, User}
-import org.kolokolov.repo.{DatabaseProfile, UserCRUDModule}
+import org.kolokolov.model.{Message, Customer}
+import org.kolokolov.repo.{DatabaseProfile, CustomerCRUDModule}
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
@@ -9,11 +9,11 @@ import scala.concurrent.Future
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class UserService(override val profile: JdbcProfile) extends UserCRUDModule with DatabaseProfile {
+class UserService(override val profile: JdbcProfile) extends CustomerCRUDModule with DatabaseProfile {
 
-  def getAllUsers: Future[Seq[User]] = UserCRUD.getAll
-  def getUserById(id: Int): Future[Option[User]] = UserCRUD.getById(id)
-  def saveUser(user: User): Future[Int] = UserCRUD.save(user)
-  def deleteUser(id: Int): Future[Int] = UserCRUD.delete(id)
-  def updateUser(user: User): Future[Int] = UserCRUD.update(user)
+  def getAllUsers: Future[Seq[Customer]] = CustomerCRUD.getAll
+  def getUserById(id: Int): Future[Option[Customer]] = CustomerCRUD.getById(id)
+  def saveUser(user: Customer): Future[Int] = CustomerCRUD.save(user)
+  def deleteUser(id: Int): Future[Int] = CustomerCRUD.delete(id)
+  def updateUser(user: Customer): Future[Int] = CustomerCRUD.update(user)
 }

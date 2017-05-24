@@ -1,7 +1,7 @@
 package org.kolokolov.service
 
 import org.kolokolov.model.Message
-import org.kolokolov.repo.{DatabaseProfile, MessageCRUDModule, UserCRUDModule}
+import org.kolokolov.repo.{DatabaseProfile, MessageCRUDModule, CustomerCRUDModule}
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
@@ -9,7 +9,7 @@ import scala.concurrent.Future
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class MessageService(override val profile: JdbcProfile) extends MessageCRUDModule with UserCRUDModule with DatabaseProfile {
+class MessageService(override val profile: JdbcProfile) extends MessageCRUDModule with CustomerCRUDModule with DatabaseProfile {
 
   def getAllMessages: Future[Seq[Message]] = MessageCRUD.getAll
   def getMessageById(id: Int): Future[Option[Message]] = MessageCRUD.getById(id)

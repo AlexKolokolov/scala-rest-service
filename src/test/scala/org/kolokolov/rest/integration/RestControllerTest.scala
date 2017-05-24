@@ -7,7 +7,7 @@ import org.kolokolov.rest.{JsonSupport, RestController}
 import org.kolokolov.service.{CommentService, MessageService, TestDBCreator, UserService}
 import org.scalatest.{AsyncFunSuite, BeforeAndAfterEach, Matchers}
 import akka.http.scaladsl.model._
-import org.kolokolov.model.{Comment, Message, User}
+import org.kolokolov.model.{Comment, Message, Customer}
 import slick.jdbc.H2Profile
 
 import scala.concurrent.Await
@@ -37,19 +37,19 @@ class RestControllerTest extends AsyncFunSuite
   test("should return all users") {
     Get("/webapi/users") ~> route ~> check {
       status shouldEqual StatusCodes.OK
-      responseAs[Seq[User]] shouldEqual Seq(User("Bob Marley",1), User("Tom Waits",2), User("Guy Pearce",3))
+      responseAs[Seq[Customer]] shouldEqual Seq(Customer("Bob Marley",1), Customer("Tom Waits",2), Customer("Guy Pearce",3))
     }
   }
 
   test("should return {name:Bob Marley,id:1}") {
     Get("/webapi/users/1") ~> route ~> check {
       status shouldEqual StatusCodes.OK
-      responseAs[User] shouldEqual User("Bob Marley",1)
+      responseAs[Customer] shouldEqual Customer("Bob Marley",1)
     }
   }
 
   test("should return 'User User(Ron Perlman,0) has been saved'") {
-    Post("/webapi/users",User("Ron Perlman")) ~> route ~> check {
+    Post("/webapi/users",Customer("Ron Perlman")) ~> route ~> check {
       status shouldEqual StatusCodes.Created
       responseAs[String] shouldEqual "User User(Ron Perlman,0) has been saved"
     }
@@ -63,7 +63,7 @@ class RestControllerTest extends AsyncFunSuite
   }
 
   test("return 'User with ID: 2 has been updated'") {
-    Put("/webapi/users",User("Ron Perlman",2)) ~> route ~> check {
+    Put("/webapi/users",Customer("Ron Perlman",2)) ~> route ~> check {
       status shouldEqual StatusCodes.ResetContent
       responseAs[String] shouldEqual "User with ID: 2 has been updated"
     }
@@ -77,7 +77,7 @@ class RestControllerTest extends AsyncFunSuite
   }
 
   test("should return 'User with ID: 4 was not found' after illegal put") {
-    Put("/webapi/users",User("Ron Perlman",4)) ~> route ~> check {
+    Put("/webapi/users",Customer("Ron Perlman",4)) ~> route ~> check {
       status shouldEqual StatusCodes.BadRequest
       responseAs[String] shouldEqual "User with ID: 4 was not found"
     }

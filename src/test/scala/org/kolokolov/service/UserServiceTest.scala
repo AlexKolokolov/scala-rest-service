@@ -1,6 +1,6 @@
 package org.kolokolov.service
 
-import org.kolokolov.model.User
+import org.kolokolov.model.Customer
 import org.kolokolov.repo.H2Database
 import org.scalatest.{AsyncFunSuite, BeforeAndAfterEach, Matchers}
 import slick.jdbc.H2Profile
@@ -31,13 +31,13 @@ class UserServiceTest extends AsyncFunSuite
 
   test("getAllUsers should return Seq(User(Bob Marley,1), User(Tom Waits,2), User(Guy Pearce,3))") {
     getAllUsers.map { result =>
-      result shouldEqual Seq(User("Bob Marley",1), User("Tom Waits",2), User("Guy Pearce",3))
+      result shouldEqual Seq(Customer("Bob Marley",1), Customer("Tom Waits",2), Customer("Guy Pearce",3))
     }
   }
 
   test("getUserById(1) should return Some(User(Bob Marley,1))") {
     getUserById(1).map { result =>
-      result shouldEqual Some(User("Bob Marley",1))
+      result shouldEqual Some(Customer("Bob Marley",1))
     }
   }
 
@@ -63,25 +63,25 @@ class UserServiceTest extends AsyncFunSuite
   }
 
   test("getUserById(4) should return Some(User(Marlon Brando, 4)) after saveUser(User(Marlon Brando))") {
-    saveUser(User("Marlon Brando")).flatMap { saveResult =>
+    saveUser(Customer("Marlon Brando")).flatMap { saveResult =>
       saveResult shouldEqual 1
       getUserById(4).map { result =>
-        result shouldEqual Some(User("Marlon Brando", 4))
+        result shouldEqual Some(Customer("Marlon Brando", 4))
       }
     }
   }
 
   test("getUserById(1) should return Some(User(Marlon Brando, 1)) after updateUser(User(Marlon Brando, 1))") {
-    updateUser(User("Marlon Brando",1)).flatMap { updateResult =>
+    updateUser(Customer("Marlon Brando",1)).flatMap { updateResult =>
       updateResult shouldEqual 1
       getUserById(1).map { result =>
-        result shouldEqual Some(User("Marlon Brando", 1))
+        result shouldEqual Some(Customer("Marlon Brando", 1))
       }
     }
   }
 
   test("updateUser(User(Marlon Brando, 4)) should return 0") {
-    updateUser(User("Marlon Brando",4)).map { result =>
+    updateUser(Customer("Marlon Brando",4)).map { result =>
       result shouldEqual 0
     }
   }

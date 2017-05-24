@@ -2,7 +2,7 @@ package org.kolokolov.rest.unit
 
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.kolokolov.model.{Comment, Message, User}
+import org.kolokolov.model.{Comment, Message, Customer}
 import org.kolokolov.rest.{JsonSupport, RestController}
 import org.kolokolov.service.{CommentService, MessageService, UserService}
 import org.scalamock.scalatest.AsyncMockFactory
@@ -19,8 +19,8 @@ class RestControllerTest extends AsyncFunSuite
   with ScalatestRouteTest
   with JsonSupport {
 
-  private val firstUser = User("Bob Marley",1)
-  private val secondUser = User("Tam Waits",2)
+  private val firstUser = Customer("Bob Marley",1)
+  private val secondUser = Customer("Tam Waits",2)
 
   private val firstMessage = Message("Hello, everybody!",1,1)
   private val secondMessage = Message("Happy New Year!",2,2)
@@ -44,14 +44,14 @@ class RestControllerTest extends AsyncFunSuite
   test("should return all users") {
     val route = createRoute
     Get("/webapi/users") ~> route ~> check {
-      responseAs[Seq[User]] shouldEqual Seq(firstUser,secondUser)
+      responseAs[Seq[Customer]] shouldEqual Seq(firstUser,secondUser)
     }
   }
 
   test("should return firstUser") {
     val route = createRoute
     Get("/webapi/users/1") ~> route ~> check {
-      responseAs[User] shouldEqual firstUser
+      responseAs[Customer] shouldEqual firstUser
     }
   }
 

@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import org.kolokolov.model.{Comment, Message, User}
+import org.kolokolov.model.{Comment, Message, Customer}
 import org.kolokolov.service.{CommentService, MessageService, UserService}
 import org.slf4j.LoggerFactory
 
@@ -31,7 +31,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
       pathEndOrSingleSlash {
         get {
           // GET /webapi/users - Get all users
-          val usersFuture: Future[Seq[User]] = userService.getAllUsers
+          val usersFuture: Future[Seq[Customer]] = userService.getAllUsers
           onComplete(usersFuture) {
             case Success(users) => complete(users)
             case Failure(ex) => {
@@ -42,7 +42,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
         } ~
         post {
           // POST /webapi/users - Add new user
-          entity(as[User]) { user =>
+          entity(as[Customer]) { user =>
             val savedUser = userService.saveUser(user)
             onComplete(savedUser) {
               case Success(linesModified) => linesModified match {
@@ -58,7 +58,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
         } ~
         put {
           // PUT /webapi/users - Update user
-          entity(as[User]) { user =>
+          entity(as[Customer]) { user =>
             val updatedUser = userService.updateUser(user)
             onComplete(updatedUser) {
               case Success(n) => n match {
@@ -77,7 +77,7 @@ class RestController(val userService: UserService, val messageService: MessageSe
         pathEndOrSingleSlash {
           get {
             // GET /webapi/users/1 - Get user by ID
-            val userFuture: Future[Option[User]] = userService.getUserById(userId)
+            val userFuture: Future[Option[Customer]] = userService.getUserById(userId)
             onComplete(userFuture) {
               case Success(optionUser) => optionUser match {
                 case Some(user) => complete(user)

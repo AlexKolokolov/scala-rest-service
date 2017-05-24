@@ -9,7 +9,7 @@ import scala.concurrent.Future
   */
 trait CommentCRUDModule extends AbstractCRUDModule {
 
-  self: UserCRUDModule with MessageCRUDModule with DatabaseProfile =>
+  self: CustomerCRUDModule with MessageCRUDModule with DatabaseProfile =>
 
   import profile.api._
 

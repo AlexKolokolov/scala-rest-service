@@ -9,7 +9,7 @@ import scala.concurrent.Future
   */
 trait MessageCRUDModule extends AbstractCRUDModule {
 
-  self: UserCRUDModule with DatabaseProfile =>
+  self: CustomerCRUDModule with DatabaseProfile =>
 
   import profile.api._
 
@@ -17,7 +17,7 @@ trait MessageCRUDModule extends AbstractCRUDModule {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def text = column[String]("text")
     def authorId = column[Int]("author_id")
-    def author = foreignKey("author", authorId, UserCRUD.dataTable)(_.id,
+    def author = foreignKey("author", authorId, CustomerCRUD.dataTable)(_.id,
       onDelete = ForeignKeyAction.Cascade, onUpdate = ForeignKeyAction.Restrict)
     def * = (text, authorId, id) <> (Message.tupled, Message.unapply)
   }

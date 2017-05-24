@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import org.kolokolov.repo.H2Database
-import org.kolokolov.rest.{DBCreator, RestController}
+import org.kolokolov.rest.{DBCreator, ShopRestController}
 import org.kolokolov.service.{CommentService, MessageService, UserService}
 import slick.jdbc.H2Profile
 
@@ -25,14 +25,14 @@ object Server {
   val messageService = new MessageService(H2Profile)
   val commentService = new CommentService(H2Profile)
 
-  val restController = new RestController(userService, messageService, commentService, system)
+  val shopRestController = new ShopRestController(system) with H2Database
   val dbHelper = new DBCreator with H2Database
 
   def main(args: Array[String]) {
 
     Await.result(dbHelper.setupDB, Duration.Inf)
 
-    val bindingFuture = Http().bindAndHandle(restController.rootRoute, "localhost", 8080)
+    val bindingFuture = Http().bindAndHandle(shopRestController.rootRoute, "localhost", 8080)
 
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
