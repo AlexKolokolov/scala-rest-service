@@ -4,10 +4,12 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+import io.swagger.annotations._
 import org.kolokolov.model._
 import org.kolokolov.repo.DatabaseProfile
 import org.kolokolov.service._
 import org.slf4j.LoggerFactory
+import javax.ws.rs.Path
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
@@ -15,6 +17,8 @@ import scala.util.{Failure, Success}
 /**
   * Created by Kolokolov on 11.05.2017.
   */
+@Api(value = "/webapi", description = "On-line shop", produces = "application/json")
+@Path("/webapi")
 class ShopRestController(system: ActorSystem) extends JsonSupport {
 
   this: DatabaseProfile =>
@@ -29,7 +33,7 @@ class ShopRestController(system: ActorSystem) extends JsonSupport {
 
   private val logger = LoggerFactory.getLogger(this.getClass)
 
-  val rootRoute = Route {
+  val routes = Route {
     pathPrefix("webapi") {
       customerRoute ~ productVendorRoute ~ productCategoryRoute ~ productRoute ~ orderRoute
     }
