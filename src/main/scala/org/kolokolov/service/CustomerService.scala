@@ -1,12 +1,10 @@
 package org.kolokolov.service
 
 import org.kolokolov.model.Customer
-import org.kolokolov.repo.{CustomerCRUDModule, DatabaseProfile, H2Database}
-import org.kolokolov.rest.DBCreator
-import slick.jdbc.{H2Profile, JdbcProfile}
+import org.kolokolov.repo.{CustomerCRUDModule, DatabaseProfile}
+import slick.jdbc.JdbcProfile
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.

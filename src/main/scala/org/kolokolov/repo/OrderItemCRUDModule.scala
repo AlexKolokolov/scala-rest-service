@@ -1,6 +1,6 @@
 package org.kolokolov.repo
 
-import org.kolokolov.model.{Order, OrderItem}
+import org.kolokolov.model.OrderItem
 
 import scala.concurrent.Future
 

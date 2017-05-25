@@ -3,8 +3,7 @@ package org.kolokolov.rest
 import org.kolokolov.model._
 import org.kolokolov.repo._
 
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
