@@ -32,7 +32,7 @@ trait AbstractCRUDModule {
     }
 
     def save(entity: E): Future[Int] = {
-      val saveAction = dataTable += entity
+      val saveAction = dataTable returning dataTable.map(_.id) += entity
       database.run(saveAction)
     }
 

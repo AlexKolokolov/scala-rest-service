@@ -22,4 +22,5 @@ class OrderService(override val profile: JdbcProfile) extends OrderCRUDModule wi
   def addNewItem(item: OrderItem): Future[Int] = OrderItemCRUD.save(item)
   def updateProductQuantity(item: OrderItem): Future[Int] = OrderItemCRUD.update(item)
   def removeItemFromOrder(itemId: Int, orderId: Int): Future[Int] = OrderItemCRUD.deleteItemFromOrderById(itemId,orderId)
+  def removeItemById(itemId: Int): Future[Int] = OrderItemCRUD.delete(itemId)
 }
