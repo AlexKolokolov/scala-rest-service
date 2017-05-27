@@ -8,6 +8,8 @@ import slick.jdbc.H2Profile
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+import concurrent.ExecutionContext.Implicits.global
+
 /**
   * Created by Kolokolov on 5/10/17.
   */

@@ -23,15 +23,15 @@ class ShopRestController(system: ActorSystem) extends JsonSupport {
 
   this: DatabaseProfile =>
 
+  private val logger = LoggerFactory.getLogger(this.getClass)
+
+  implicit val executionContext = system.dispatcher
+
   lazy val customerService = new CustomerService(profile)
   lazy val productService = new ProductService(profile)
   lazy val productCategoryService = new ProductCategoryService(profile)
   lazy val productVendorService = new ProductVendorService(profile)
   lazy val orderService = new OrderService(profile)
-
-  implicit val executionContext = system.dispatcher
-
-  private val logger = LoggerFactory.getLogger(this.getClass)
 
   val routes = Route {
     pathPrefix("webapi") {

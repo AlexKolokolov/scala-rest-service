@@ -3,12 +3,13 @@ package org.kolokolov.service
 import org.kolokolov.model.{Order, OrderItem}
 import org.kolokolov.repo.{DatabaseProfile, OrderCRUDModule, OrderItemCRUDModule}
 import slick.jdbc.JdbcProfile
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class OrderService(override val profile: JdbcProfile) extends OrderCRUDModule with OrderItemCRUDModule with DatabaseProfile {
+class OrderService(override val profile: JdbcProfile)(implicit val ec: ExecutionContext) extends OrderCRUDModule with OrderItemCRUDModule with DatabaseProfile {
 
   def getAllOrders: Future[Seq[Order]] = OrderCRUD.getAll
   def getOrderById(id: Int): Future[Option[Order]] = OrderCRUD.getById(id)

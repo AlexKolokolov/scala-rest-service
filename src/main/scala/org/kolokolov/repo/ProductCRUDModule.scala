@@ -2,6 +2,8 @@ package org.kolokolov.repo
 
 import org.kolokolov.model.Product
 
+import scala.concurrent.Future
+
 /**
   * Created by Kolokolov on 16.05.2017.
   */

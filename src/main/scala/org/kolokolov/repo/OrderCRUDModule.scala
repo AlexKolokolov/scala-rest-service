@@ -6,7 +6,7 @@ import org.kolokolov.model.OrderStatus.OrderStatus
 import slick.ast.BaseTypedType
 import slick.jdbc.JdbcType
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Created by Kolokolov on 16.05.2017.
@@ -44,7 +44,7 @@ trait OrderCRUDModule extends CustomerCRUDModule {
       database.run(getOrdersByCustomerIdAction)
     }
 
-    override def update(order: Order): Future[Int] = {
+    override def update(order: Order)(implicit ec: ExecutionContext): Future[Int] = {
       val updateOrderStatusAction = dataTable.filter(_.id === order.id).
         filter(_.customerId === order.customerId).update(order)
       database.run(updateOrderStatusAction)
