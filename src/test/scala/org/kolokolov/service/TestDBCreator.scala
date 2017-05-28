@@ -1,15 +1,19 @@
 package org.kolokolov.service
 
-import org.kolokolov.model.{Comment, Message, Customer}
-import org.kolokolov.repo.{CommentCRUDModule, DatabaseProfile, MessageCRUDModule, CustomerCRUDModule}
-import slick.jdbc.H2Profile
+import org.kolokolov.model._
+import org.kolokolov.repo._
 
 import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class TestDBCreator extends CustomerCRUDModule with MessageCRUDModule with CommentCRUDModule {
+class TestDBCreator extends CustomerCRUDModule
+  with ProductCategoryCRUDModule
+  with ProductVendorCRUDModule
+  with ProductCRUDModule
+  with OrderItemCRUDModule
+  with OrderCRUDModule {
 
   self: DatabaseProfile =>
 
@@ -18,19 +22,28 @@ class TestDBCreator extends CustomerCRUDModule with MessageCRUDModule with Comme
   def setupDB: Future[Unit] = {
     val setup = DBIO.seq(
       CustomerCRUD.dataTable.schema.create,
-      MessageCRUD.dataTable.schema.create,
-      CommentCRUD.dataTable.schema.create,
-      CustomerCRUD.dataTable ++= Seq(Customer("Bob Marley"), Customer("Tom Waits"), Customer("Guy Pearce")),
-      MessageCRUD.dataTable ++= Seq(Message("Rock sucks!", 1), Message("Good morning to everyone!", 1), Message("My new album has been released!", 2), Message("Happy New Year!", 3)),
-      CommentCRUD.dataTable ++= Seq(Comment("Shut up! Your reggae sucks!",1,2), Comment("Great! I love it!",3,3), Comment("Thank you, buddy!",4,2), Comment("Thank you, man!",4,1))
+      ProductVendorCRUD.dataTable.schema.create,
+      ProductCategoryCRUD.dataTable.schema.create,
+      ProductCRUD.dataTable.schema.create,
+      OrderCRUD.dataTable.schema.create,
+      OrderItemCRUD.dataTable.schema.create,
+      CustomerCRUD.dataTable ++= Seq(Customer("Bob Marley"), Customer("Tom Waits")),
+      ProductVendorCRUD.dataTable ++= Seq(ProductVendor("H&K"), ProductVendor("FN")),
+      ProductCategoryCRUD.dataTable ++= Seq(ProductCategory("SMG"), ProductCategory("Sidearm")),
+      ProductCRUD.dataTable ++= Seq(Product("MP5",1,1),Product("UPS",2,1),Product("P90",1,2),Product("FiveSeven",2,2)),
+      OrderCRUD.dataTable ++= Seq(Order(1,OrderStatus.Created), Order(2,OrderStatus.Created)),
+      OrderItemCRUD.dataTable ++= Seq(OrderItem(1,1,5),OrderItem(1,3,5),OrderItem(2,2,1),OrderItem(2,4,1))
     ).transactionally
     database.run(setup)
   }
 
   def cleanDB: Future[Unit] = {
     val dropTables = DBIO.seq(
-      CommentCRUD.dataTable.schema.drop,
-      MessageCRUD.dataTable.schema.drop,
+      OrderItemCRUD.dataTable.schema.drop,
+      OrderCRUD.dataTable.schema.drop,
+      ProductCRUD.dataTable.schema.drop,
+      ProductVendorCRUD.dataTable.schema.drop,
+      ProductCategoryCRUD.dataTable.schema.drop,
       CustomerCRUD.dataTable.schema.drop
     ).transactionally
     database.run(dropTables)
