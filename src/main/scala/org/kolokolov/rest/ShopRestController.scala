@@ -142,7 +142,7 @@ class ShopRestController(system: ActorSystem) extends JsonSupport {
               pathEndOrSingleSlash {
                 get {
                   // GET /webapi/customers/1/orders/1/items - Get all items of a particular order of a particular customer
-                  val itemsFuture = orderService.getAllItemsOfCustomerOrderById(orderId,customerId)
+                  val itemsFuture = orderService.getItemsOfCustomerOrder(orderId,customerId)
                   onComplete(itemsFuture) {
                     case Success(items) => complete(items)
                     case Failure(ex) => {
@@ -484,7 +484,7 @@ class ShopRestController(system: ActorSystem) extends JsonSupport {
               entity(as[OrderItem]) { item =>
                 item.orderId match {
                   case `orderId` => {
-                    val updatedItem: Future[Int] = orderService.updateProductQuantity(item)
+                    val updatedItem: Future[Int] = orderService.updateProductQuantityInItem(item)
                     onComplete(updatedItem) {
                       case Success(1) => complete(StatusCodes.Created, s"Quantity of the item with ID ${item.id} in the order with ID $orderId has been changed to ${item.quantity}")
                       case Success(_) => complete(StatusCodes.NotFound, s"No item was found for possible update with item ${item  }")

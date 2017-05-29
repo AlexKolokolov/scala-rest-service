@@ -36,7 +36,7 @@ class ProductCategoryServiceTest extends AsyncFunSuite
     }
   }
 
-  test("getCategoryById(1) should return Some(Customer(Bob Marley,1))") {
+  test("getCategoryById(1) should return Some(ProductCategory(SMG,1))") {
     getCategoryById(1).map { result =>
       result shouldEqual Some(ProductCategory("SMG",1))
     }
@@ -72,7 +72,7 @@ class ProductCategoryServiceTest extends AsyncFunSuite
     }
   }
 
-  test("getCategoryById(1) should return Some(ProductCategory(Rifle,1)) after updateCategory(ProductCategory(Rifle))") {
+  test("getCategoryById(1) should return Some(ProductCategory(Rifle,1)) after updateCategory(ProductCategory(Rifle,1))") {
     updateCategory(ProductCategory("Rifle",1)).flatMap { updateResult =>
       updateResult shouldEqual 1
       getCategoryById(1).map { result =>

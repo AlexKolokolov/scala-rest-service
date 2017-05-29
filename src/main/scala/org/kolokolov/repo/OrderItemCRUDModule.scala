@@ -2,7 +2,7 @@ package org.kolokolov.repo
 
 import org.kolokolov.model.OrderItem
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Created by Kolokolov on 16.05.2017.
@@ -33,7 +33,7 @@ trait OrderItemCRUDModule extends ProductCRUDModule with OrderCRUDModule {
       database.run(getItemByOrderIdAction)
     }
 
-    def getAllItemsOfCustomersOrderById(orderId: Int, customerId: Int): Future[Seq[OrderItem]] = {
+    def getAllItemsOfCustomersOrder(orderId: Int, customerId: Int): Future[Seq[OrderItem]] = {
       val getItemsOfCustomersOrderByIdAction = {
         for {
           o <- OrderCRUD.dataTable if o.id === orderId && o.customerId === customerId
@@ -46,6 +46,12 @@ trait OrderItemCRUDModule extends ProductCRUDModule with OrderCRUDModule {
     def deleteItemFromOrderById(itemId: Int, orderId: Int): Future[Int] = {
       val deleteItemFromOrderByIdAction = dataTable.filter(_.id === itemId).filter(_.orderId === orderId).delete
       database.run(deleteItemFromOrderByIdAction)
+    }
+
+    override def update(item: OrderItem)(implicit ec: ExecutionContext): Future[Int] = {
+      val updateProductQuantityAction = dataTable.filter(_.id === item.id).
+        filter(_.orderId === item.orderId).filter(_.productId === item.productId).update(item)
+      database.run(updateProductQuantityAction)
     }
   }
 }

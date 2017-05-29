@@ -240,7 +240,7 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
     get{
       pathPrefix("customers" / IntNumber / "orders" / IntNumber / "items") { (customerId, orderId) =>
         pathEndOrSingleSlash {
-          val itemsRetrieval = orderService.getAllItemsOfCustomerOrderById(orderId, customerId)
+          val itemsRetrieval = orderService.getItemsOfCustomerOrder(orderId, customerId)
           onSuccess(itemsRetrieval) { items =>
             complete(items)
           }
@@ -539,17 +539,17 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
         pathEndOrSingleSlash {
           entity(as[Product]) {
             case product@Product(name,category,vendor,_) =>
-            val productAddition = productService.addNewProduct(product)
-            onSuccess(productAddition) {
-              case -1 => complete(StatusCodes.BadRequest, s"Product with category ID: $category and vendor ID: $vendor cannot be added")
-              case newId => {
-                extractUri { uri =>
-                  respondWithHeader(Location(uri + "/" + newId)) {
-                    complete(StatusCodes.Created, Product(name,category,vendor,newId))
+              val productAddition = productService.addNewProduct(product)
+              onSuccess(productAddition) {
+                case -1 => complete(StatusCodes.BadRequest, s"Product with category ID: $category and vendor ID: $vendor cannot be added")
+                case newId => {
+                  extractUri { uri =>
+                    respondWithHeader(Location(uri + "/" + newId)) {
+                      complete(StatusCodes.Created, Product(name,category,vendor,newId))
+                    }
                   }
                 }
               }
-            }
           }
         }
       }
@@ -576,7 +576,7 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
               val productUpdating = productService.updateProduct(product)
               onSuccess(productUpdating) {
                 case 1 => complete(StatusCodes.ResetContent)
-                case -1 => complete(StatusCodes.BadRequest, s"Product has illegal category ID: $category or vandor ID: $vendor")
+                case -1 => complete(StatusCodes.BadRequest, s"Product has illegal category ID: $category or vendor ID: $vendor")
                 case _ => complete(StatusCodes.NotFound, s"Product with ID: $id was not found")
               }
             case _ => complete(StatusCodes.BadRequest)
@@ -835,7 +835,7 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
         pathEndOrSingleSlash {
           entity(as[OrderItem]) {
             case item@OrderItem(itemOrderId, productId, _, id) if itemOrderId == orderId =>
-              val itemUpdating = orderService.updateProductQuantity(item)
+              val itemUpdating = orderService.updateProductQuantityInItem(item)
               onSuccess(itemUpdating) {
                 case 1 => complete(StatusCodes.ResetContent)
                 case _ => complete(StatusCodes.NotFound, s"Item with ID: $id and product ID: $productId was not found in order with ID: $orderId")
