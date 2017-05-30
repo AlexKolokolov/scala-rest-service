@@ -3,7 +3,7 @@ package org.kolokolov.swagger
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.github.swagger.akka.{HasActorSystem, SwaggerHttpService}
-import org.kolokolov.rest.{ShopRestController, SwaggerShopRestController}
+import org.kolokolov.rest.SwaggerShopRestController
 
 import reflect.runtime.universe._
 
