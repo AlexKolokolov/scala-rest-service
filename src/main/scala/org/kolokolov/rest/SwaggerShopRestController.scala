@@ -704,7 +704,6 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
               val orderStatusUpdating = orderService.updateOrderStatus(order)
               onSuccess(orderStatusUpdating) {
                 case 1 => complete(StatusCodes.ResetContent)
-                case -1 => complete(StatusCodes.BadRequest, s"Order has illegal customer ID: $customerId")
                 case _ => complete(StatusCodes.BadRequest, s"Order with ID: $id of customer with ID: $customerId was not found")
               }
           }
@@ -730,7 +729,7 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
           val orderRetrieval = orderService.getOrderById(orderId)
           onSuccess(orderRetrieval) {
             case Some(order) => complete(order)
-            case None => complete(StatusCodes.NotFound, s"Vendor with ID: $orderId was not found")
+            case None => complete(StatusCodes.NotFound, s"Order with ID: $orderId was not found")
           }
         }
       }
@@ -810,7 +809,7 @@ class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
                     }
                   }
               }
-            case _ => complete(StatusCodes.BadRequest, s"Wrong order ID in ite")
+            case _ => complete(StatusCodes.BadRequest, s"Wrong order ID in the item")
           }
         }
       }

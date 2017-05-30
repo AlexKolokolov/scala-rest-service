@@ -59,6 +59,7 @@ class RestControllerTest extends AsyncFunSuite
     Post("/customers",Customer("Marlon Brando")) ~> routes ~> check {
       status shouldEqual StatusCodes.Created
       responseAs[Customer] shouldEqual Customer("Marlon Brando",3)
+      header("location").get.value should endWith ("/customers/3")
     }
   }
 
@@ -157,6 +158,7 @@ class RestControllerTest extends AsyncFunSuite
     Post("/categories",ProductCategory("Rifle")) ~> routes ~> check {
       status shouldEqual StatusCodes.Created
       responseAs[ProductCategory] shouldEqual ProductCategory("Rifle",3)
+      header("location").get.value should endWith ("/categories/3")
     }
   }
 
@@ -213,6 +215,7 @@ class RestControllerTest extends AsyncFunSuite
     Post("/vendors",ProductVendor("IMI")) ~> routes ~> check {
       status shouldEqual StatusCodes.Created
       responseAs[ProductVendor] shouldEqual ProductVendor("IMI",3)
+      header("location").get.value should endWith ("/vendors/3")
     }
   }
 
@@ -269,6 +272,7 @@ class RestControllerTest extends AsyncFunSuite
     Post("/products",Product("UMP",categoryId = 1,vendorId = 1)) ~> routes ~> check {
       status shouldEqual StatusCodes.Created
       responseAs[Product] shouldEqual Product("UMP",1,1,5)
+      header("location").get.value should endWith ("/products/5")
     }
   }
 
@@ -323,6 +327,139 @@ class RestControllerTest extends AsyncFunSuite
     Put("/products",Product("UMP",1,3,1)) ~> routes ~> check {
       status shouldEqual StatusCodes.BadRequest
       responseAs[String] shouldEqual "Product has illegal category ID: 1 or vendor ID: 3"
+    }
+  }
+
+  // /orders route tests
+
+  test("GET /orders should return all orders") {
+    Get("/orders") ~> routes ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[Seq[Order]] shouldEqual Seq(Order(1,OrderStatus.Created,1), Order(2,OrderStatus.Created,2))
+    }
+  }
+
+  test("GET /orders/1 should return Order(1,OrderStatus.Created,1)") {
+    Get("/orders/1") ~> routes ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[Order] shouldEqual Order(1,OrderStatus.Created,1)
+    }
+  }
+
+  test("GET /orders/3 should return 'Order with ID: 3 was not found'") {
+    Get("/orders/3") ~> routes ~> check {
+      status shouldEqual StatusCodes.NotFound
+      responseAs[String] shouldEqual "Order with ID: 3 was not found"
+    }
+  }
+
+  test("POST /orders with Order(1) should return Order(1,OrderStatus.Created,3)") {
+    Post("/orders",Order(1)) ~> routes ~> check {
+      status shouldEqual StatusCodes.Created
+      responseAs[Order] shouldEqual Order(1,OrderStatus.Created,3)
+      header("location").get.value should endWith ("/orders/3")
+    }
+  }
+
+  test("POST /orders with Order(3) should return 'Order with customer ID: 3 cannot be created'") {
+    Post("/orders",Order(customerId = 3)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Order with customer ID: 3 cannot be created"
+    }
+  }
+
+  test("DELETE /orders/1 status should be 205 ResetContent") {
+    Delete("/orders/1") ~> routes ~> check {
+      status shouldEqual StatusCodes.ResetContent
+    }
+  }
+
+  test("DELETE /orders/3 should return 'Order with ID: 3 was not found'") {
+    Delete("/orders/3") ~> routes ~> check {
+      status shouldEqual StatusCodes.NotFound
+      responseAs[String] shouldEqual "Order with ID: 3 was not found"
+    }
+  }
+
+  test("PUT /orders with Order(1,OrderStatus.Confirmed,1) status should be 205 ResetContent") {
+    Put("/orders",Order(1,OrderStatus.Confirmed,1)) ~> routes ~> check {
+      status shouldEqual StatusCodes.ResetContent
+    }
+  }
+
+  test("PUT /orders with Order(2,OrderStatus.Confirmed,1) should return 'Order with ID: 1 of customer with ID: 2 was not found'") {
+    Put("/orders",Order(customerId = 2,OrderStatus.Confirmed,id = 1)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Order with ID: 1 of customer with ID: 2 was not found"
+    }
+  }
+
+  test("PUT /orders with Order(3,OrderStatus.Confirmed,1) should return 'Order with ID: 1 of customer with ID: 3 was not found'") {
+    Put("/orders",Order(customerId = 3,OrderStatus.Confirmed,id = 1)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Order with ID: 1 of customer with ID: 3 was not found"
+    }
+  }
+
+  test("GET /orders/1/items should return all items of 1 order") {
+    Get("/orders/1/items") ~> routes ~> check {
+      status shouldEqual StatusCodes.OK
+      responseAs[Seq[OrderItem]] shouldEqual Seq(OrderItem(1,1,5,1),OrderItem(1,3,5,2))
+    }
+  }
+
+  test("POST /orders/1/items with OrderItem(1,3,5) should return OrderItem(1,3,5,5)") {
+    Post("/orders/1/items",OrderItem(orderId = 1,productId = 3,quantity = 5)) ~> routes ~> check {
+      status shouldEqual StatusCodes.Created
+      responseAs[OrderItem] shouldEqual OrderItem(1,3,5,5)
+      header("location").get.value should endWith ("/orders/1/items/5")
+    }
+  }
+
+  test("POST /orders/1/items with OrderItem(2,3,5) should return 'Wrong order ID in the item'") {
+    Post("/orders/1/items",OrderItem(orderId = 2,productId = 3,quantity = 5)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Wrong order ID in the item"
+    }
+  }
+
+  test("POST /orders/1/items with OrderItem(1,5,5) should return 'Order item has illegal product ID: 5'") {
+    Post("/orders/1/items",OrderItem(orderId = 1,productId = 5,quantity = 5)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Order item has illegal product ID: 5"
+    }
+  }
+
+  test("PUT /orders/1/items with OrderItem(1,3,10,2) status should be 205 ResetContent") {
+    Put("/orders/1/items",OrderItem(orderId = 1,productId = 3,quantity = 10,id = 2)) ~> routes ~> check {
+      status shouldEqual StatusCodes.ResetContent
+    }
+  }
+
+  test("PUT /orders/1/items with OrderItem(1,1,10,2) should return 'Item with ID: 2 and product ID: 1 was not found in order with ID: 1'") {
+    Put("/orders/1/items",OrderItem(orderId = 1,productId = 1,quantity = 10,id = 2)) ~> routes ~> check {
+      status shouldEqual StatusCodes.NotFound
+      responseAs[String] shouldEqual "Item with ID: 2 and product ID: 1 was not found in order with ID: 1"
+    }
+  }
+
+  test("PUT /orders/1/items with OrderItem(2,1,10,1) should return 'Wrong order ID in item'") {
+    Put("/orders/1/items",OrderItem(orderId = 2,productId = 1,quantity = 10,id = 1)) ~> routes ~> check {
+      status shouldEqual StatusCodes.BadRequest
+      responseAs[String] shouldEqual "Wrong order ID in item"
+    }
+  }
+
+  test("DELETE /orders/1/items/1 status should be 205 ResetContent") {
+    Delete("/orders/1/items/1") ~> routes ~> check {
+      status shouldEqual StatusCodes.ResetContent
+    }
+  }
+
+  test("DELETE /orders/1/items/3 should return 'Item with ID: 3 was not found in order with ID: 1'") {
+    Delete("/orders/1/items/3") ~> routes ~> check {
+      status shouldEqual StatusCodes.NotFound
+      responseAs[String] shouldEqual "Item with ID: 3 was not found in order with ID: 1"
     }
   }
 }

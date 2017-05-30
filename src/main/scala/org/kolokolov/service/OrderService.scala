@@ -23,5 +23,4 @@ class OrderService(override val profile: JdbcProfile)(implicit val ec: Execution
   def addNewItem(item: OrderItem): Future[Int] = OrderItemCRUD.save(item)
   def updateProductQuantityInItem(item: OrderItem): Future[Int] = OrderItemCRUD.update(item)
   def removeItemFromOrder(itemId: Int, orderId: Int): Future[Int] = OrderItemCRUD.deleteItemFromOrderById(itemId,orderId)
-//  def removeItemById(itemId: Int): Future[Int] = OrderItemCRUD.delete(itemId)
 }
