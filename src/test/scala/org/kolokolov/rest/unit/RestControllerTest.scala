@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.kolokolov.model._
 import org.kolokolov.repo.H2Database
-import org.kolokolov.rest.{JsonSupport,SwaggerShopRestController}
+import org.kolokolov.rest.{JsonSupport,RestController}
 import org.kolokolov.service.CustomerService
 import org.scalamock.scalatest.AsyncMockFactory
 import org.scalatest.{AsyncFunSuite, Matchers}
@@ -36,7 +36,7 @@ class RestControllerTest extends AsyncFunSuite
     val stubCustomerService = stub[CustomerService]
     (stubCustomerService.getCustomerById _).when(1).returns(Future(Some(firstCustomer)))
     (stubCustomerService.getAllCustomers _).when().returns(Future(Seq(firstCustomer,secondCustomer)))
-    val controller = new SwaggerShopRestController(system) with H2Database {
+    val controller = new RestController(system) with H2Database {
       override lazy val customerService = stubCustomerService
     }
     controller.routes

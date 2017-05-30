@@ -6,7 +6,7 @@ import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import com.github.swagger.akka.SwaggerSite
 import org.kolokolov.repo.H2Database
-import org.kolokolov.rest.{DBCreator, SwaggerShopRestController}
+import org.kolokolov.rest.{DBCreator, RestController}
 import org.kolokolov.swagger.SwaggerDocService
 import slick.jdbc.H2Profile
 
@@ -23,7 +23,7 @@ object Server extends App with SwaggerSite {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val shopRestController = new SwaggerShopRestController(system) with H2Database
+  val shopRestController = new RestController(system) with H2Database
   val swagger = new SwaggerDocService(system)
   val dbHelper = new DBCreator with H2Database
 

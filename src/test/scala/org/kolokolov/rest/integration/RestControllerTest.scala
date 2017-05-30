@@ -3,7 +3,7 @@ package org.kolokolov.rest.integration
 import akka.actor.ActorSystem
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.kolokolov.repo.H2Database
-import org.kolokolov.rest.{JsonSupport, SwaggerShopRestController}
+import org.kolokolov.rest.{JsonSupport, RestController}
 import org.kolokolov.service.TestDBCreator
 import org.scalatest.{AsyncFunSuite, BeforeAndAfterEach, Matchers}
 import akka.http.scaladsl.model._
@@ -21,7 +21,7 @@ class RestControllerTest extends AsyncFunSuite
   with BeforeAndAfterEach
   with JsonSupport{
 
-  private val routes = (new SwaggerShopRestController(ActorSystem("test-actor-system")) with H2Database).routes
+  private val routes = (new RestController(ActorSystem("test-actor-system")) with H2Database).routes
 
   val dbTestHelper = new TestDBCreator with H2Database
 

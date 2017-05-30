@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory
   */
 @Api(value = "/webapi", produces = "application/json")
 @javax.ws.rs.Path("/")
-class SwaggerShopRestController(system: ActorSystem) extends JsonSupport {
+class RestController(system: ActorSystem) extends JsonSupport {
 
   this: DatabaseProfile =>
 
