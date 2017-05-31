@@ -1,0 +1,126 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                            http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="Kolokolov" id="1">
+        <createTable tableName="customer">
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="customer_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="order">
+            <column name="customer_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="order_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="order_item">
+            <column name="order_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="order_item_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="product">
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vendor_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="product_category">
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_category_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="product_vendor">
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_vendor_pkey"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_item" constraintName="item_order_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="order"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_item" constraintName="item_prod_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="product"/>
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="order" constraintName="order_cust_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="customer"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="product" constraintName="prod_cat_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="product_category"/>
+        <addForeignKeyConstraint baseColumnNames="vendor_id" baseTableName="product" constraintName="prod_vend_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="product_vendor"/>
+    </changeSet>
+
+    <changeSet id="2" author="Kolokolov">
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/customers.csv"
+                  schemaName="public"
+                  tableName="customer">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/categories.csv"
+                  schemaName="public"
+                  tableName="product_category">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/vendors.csv"
+                  schemaName="public"
+                  tableName="product_vendor">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/products.csv"
+                  schemaName="public"
+                  tableName="product">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/orders.csv"
+                  schemaName="public"
+                  tableName="order">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/order_items.csv"
+                  schemaName="public"
+                  tableName="order_item">
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

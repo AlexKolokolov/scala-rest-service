@@ -15,8 +15,8 @@ trait OrderItemCRUDModule extends ProductCRUDModule with OrderCRUDModule {
 
   class OrderItemTable(tag: Tag) extends Table[OrderItem](tag, "order_item") with IdentifiableTable[OrderItem] {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    def orderId = column[Int]("orderId")
-    def productId = column[Int]("productId")
+    def orderId = column[Int]("order_id")
+    def productId = column[Int]("product_id")
     def quantity = column[Int]("quantity")
     def order = foreignKey("item_order_fk", orderId, OrderCRUD.dataTable)(_.id,
       onUpdate = ForeignKeyAction.Restrict, onDelete = ForeignKeyAction.Cascade)

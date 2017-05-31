@@ -14,6 +14,7 @@ which can accept following values: `Created`, `Confirmed`, `Suspended`,
 `Product` has properties of types `ProductCategory` and `ProductVendor`
  
 #### Usage:
+To create and populate database tables execute `sbt liquibase-update`
 To start web service on `localhost:8080` execute `sbt run`
 #### Api:
 See `http://localhost:8080/swagger`
