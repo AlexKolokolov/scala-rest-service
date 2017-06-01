@@ -35,8 +35,6 @@ libraryDependencies += "co.pragmati" %% "swagger-ui-akka-http" % "1.0.0"
 
 libraryDependencies += "org.yaml" % "snakeyaml" % "1.18"
 
-//libraryDependencies += "org.liquibase" % "liquibase-core" % "3.5.3"
-
 import com.github.sbtliquibase.SbtLiquibase
 
 enablePlugins(SbtLiquibase)
@@ -50,3 +48,11 @@ liquibaseDriver   := "org.postgresql.Driver"
 liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
 
 liquibaseChangelog := new java.io.File("src/main/resources/liquibase/changelog.xml")
+
+//liquibaseUsername := ""
+//
+//liquibasePassword := ""
+//
+//liquibaseDriver   := "org.h2.Driver"
+//
+//liquibaseUrl      := "jdbc:h2:mem:work"

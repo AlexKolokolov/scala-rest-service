@@ -25,7 +25,6 @@ object Server extends App with SwaggerSite {
 
   val shopRestController = new RestController(system) with PostgresDatabase
   val swagger = new SwaggerDocService(system)
-//  val dbHelper = new DBCreator with PostgresDatabase
 
   val routes = Route {
     swaggerSiteRoute ~ swagger.routes ~
@@ -33,8 +32,6 @@ object Server extends App with SwaggerSite {
       shopRestController.routes
     }
   }
-
-//  Await.result(dbHelper.setupDB, Duration.Inf)
 
   val bindingFuture = Http().bindAndHandle(routes, "localhost", 8080)
 

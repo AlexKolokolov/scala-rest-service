@@ -11,7 +11,7 @@ trait ProductVendorCRUDModule extends AbstractCRUDModule {
 
   import profile.api._
 
-  class ProductVendorTable(tag: Tag) extends Table[ProductVendor](tag, "product_vendor") with IdentifiableTable[ProductVendor] {
+  class ProductVendorTable(tag: Tag) extends Table[ProductVendor](tag, "vendor") with IdentifiableTable[ProductVendor] {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def title = column[String]("title")
     def * = (title, id) <> (ProductVendor.tupled, ProductVendor.unapply)
