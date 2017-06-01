@@ -1,7 +1,7 @@
 # Scala REST Service
 
 REST service for testing Akka HTTP and Slick
-with in-memory H2 database.
+with PostgreSQL DB and in-memory H2 DB for tests.
 
 The service manages simple on-line shop database.
 
