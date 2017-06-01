@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                            http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2" author="Kolokolov">
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/customers.csv"
+                  schemaName="public"
+                  tableName="customer">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/categories.csv"
+                  schemaName="public"
+                  tableName="category">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/vendors.csv"
+                  schemaName="public"
+                  tableName="vendor">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/products.csv"
+                  schemaName="public"
+                  tableName="product">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/orders.csv"
+                  schemaName="public"
+                  tableName="order">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="src/main/resources/liquibase/order_items.csv"
+                  schemaName="public"
+                  tableName="order_item">
+        </loadData>
+        <rollback>
+            DELETE FROM order_item;
+            DELETE FROM "order";
+            DELETE FROM product;
+            DELETE FROM vendor;
+            DELETE FROM category;
+            DELETE FROM customer;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

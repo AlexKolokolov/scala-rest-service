@@ -23,7 +23,7 @@ trait OrderCRUDModule extends CustomerCRUDModule {
       s => OrderStatus.withName(s)
     )
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    def customerId = column[Int]("customerId")
+    def customerId = column[Int]("customer_id")
     def status = column[OrderStatus]("status")
     def customer = foreignKey("order_cust_fk", customerId, CustomerCRUD.dataTable)(_.id,
       onUpdate = ForeignKeyAction.Restrict, onDelete = ForeignKeyAction.Cascade)

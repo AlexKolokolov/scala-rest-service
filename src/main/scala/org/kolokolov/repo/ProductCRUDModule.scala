@@ -16,8 +16,8 @@ trait ProductCRUDModule extends ProductVendorCRUDModule with ProductCategoryCRUD
   class ProductTable(tag: Tag) extends Table[Product](tag, "product") with IdentifiableTable[Product] {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
-    def categoryId = column[Int]("categoryId")
-    def vendorId = column[Int]("vendorId")
+    def categoryId = column[Int]("category_id")
+    def vendorId = column[Int]("vendor_id")
     def category = foreignKey("prod_cat_fk", categoryId, ProductCategoryCRUD.dataTable)(_.id,
       onUpdate = ForeignKeyAction.Restrict, onDelete = ForeignKeyAction.Cascade)
     def vendor = foreignKey("prod_vend_fk", vendorId, ProductVendorCRUD.dataTable)(_.id,

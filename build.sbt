@@ -17,6 +17,8 @@ libraryDependencies ++= Seq("com.typesafe.slick" %% "slick" % "3.2.0",
 
 libraryDependencies += "com.h2database" % "h2" % "1.4.194"
 
+libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1212"
+
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 libraryDependencies += "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
@@ -30,3 +32,27 @@ libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0
 libraryDependencies += "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.9.1"
 
 libraryDependencies += "co.pragmati" %% "swagger-ui-akka-http" % "1.0.0"
+
+libraryDependencies += "org.yaml" % "snakeyaml" % "1.18"
+
+import com.github.sbtliquibase.SbtLiquibase
+
+enablePlugins(SbtLiquibase)
+
+liquibaseUsername := "postgres"
+
+liquibasePassword := "q1"
+
+liquibaseDriver   := "org.postgresql.Driver"
+
+liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
+
+liquibaseChangelog := new java.io.File("src/main/resources/liquibase/changelog.xml")
+
+//liquibaseUsername := ""
+//
+//liquibasePassword := ""
+//
+//liquibaseDriver   := "org.h2.Driver"
+//
+//liquibaseUrl      := "jdbc:h2:mem:work"

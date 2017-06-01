@@ -1,0 +1,93 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                            http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="1" author="Kolokolov">
+        <createTable tableName="customer">
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="customer_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="order">
+            <column name="customer_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="order_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="order_item">
+            <column name="order_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="order_item_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="product">
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vendor_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="category">
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_category_pkey"/>
+            </column>
+        </createTable>
+        <createTable tableName="vendor">
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="product_vendor_pkey"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_item" constraintName="item_order_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="order"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_item" constraintName="item_prod_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="product"/>
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="order" constraintName="order_cust_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="customer"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="product" constraintName="prod_cat_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+        <addForeignKeyConstraint baseColumnNames="vendor_id" baseTableName="product" constraintName="prod_vend_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="vendor"/>
+    </changeSet>
+
+</databaseChangeLog>
