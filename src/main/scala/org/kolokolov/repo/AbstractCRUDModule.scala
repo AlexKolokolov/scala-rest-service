@@ -1,10 +1,8 @@
 package org.kolokolov.repo
 
-import java.sql.SQLException
-
 import org.kolokolov.model.Identifiable
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 /**
   * Created by Kolokolov on 10.05.2017.
@@ -33,11 +31,9 @@ trait AbstractCRUDModule {
       database.run(getByIdAction)
     }
 
-    def save(entity: E)(implicit ec: ExecutionContext): Future[Int] = {
+    def save(entity: E): Future[Int] = {
       val saveAction = dataTable returning dataTable.map(_.id) += entity
-      database.run(saveAction).recover {
-        case _: SQLException => -1
-      }
+      database.run(saveAction).fallbackTo(Future.successful(-1))
     }
 
     def delete(id: Int): Future[Int] = {
@@ -45,11 +41,9 @@ trait AbstractCRUDModule {
       database.run(deleteAction)
     }
 
-    def update(entity: E)(implicit ec: ExecutionContext): Future[Int] = {
+    def update(entity: E): Future[Int] = {
       val updateAction = dataTable.filter(_.id === entity.id).update(entity)
-      database.run(updateAction).recover {
-        case _: SQLException => -1
-      }
+      database.run(updateAction).fallbackTo(Future.successful(-1))
     }
   }
 }

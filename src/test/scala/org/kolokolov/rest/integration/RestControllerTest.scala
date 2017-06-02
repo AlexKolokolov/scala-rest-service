@@ -21,7 +21,7 @@ class RestControllerTest extends AsyncFunSuite
   with BeforeAndAfterEach
   with JsonSupport{
 
-  private val routes = (new RestController(ActorSystem("test-actor-system")) with H2Database).routes
+  private val routes = (new RestController with H2Database).routes
 
   val dbTestHelper = new TestDBCreator with H2Database
 

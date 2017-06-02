@@ -44,7 +44,7 @@ trait OrderCRUDModule extends CustomerCRUDModule {
       database.run(getOrdersByCustomerIdAction)
     }
 
-    override def update(order: Order)(implicit ec: ExecutionContext): Future[Int] = {
+    override def update(order: Order): Future[Int] = {
       val updateOrderStatusAction = dataTable.filter(_.id === order.id).
         filter(_.customerId === order.customerId).update(order)
       database.run(updateOrderStatusAction)
