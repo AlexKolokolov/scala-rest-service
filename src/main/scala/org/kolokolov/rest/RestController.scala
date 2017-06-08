@@ -819,7 +819,7 @@ class RestController extends JsonSupport {
     new ApiImplicitParam(name = "item", value = "Updated Item", required = true, dataType = "org.kolokolov.model.OrderItem", paramType = "body")
   ))
   @ApiResponses(Array(
-    new ApiResponse(code = 201, message = "Product quantity has been updated"),
+    new ApiResponse(code = 205, message = "Product quantity has been updated"),
     new ApiResponse(code = 400, message = "Bad request"),
     new ApiResponse(code = 404, message = "Item was not found in order"),
     new ApiResponse(code = 500, message = "Internal server error")
