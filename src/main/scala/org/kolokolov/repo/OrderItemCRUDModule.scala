@@ -36,8 +36,8 @@ trait OrderItemCRUDModule extends ProductCRUDModule with OrderCRUDModule {
     def getAllItemsOfCustomersOrder(orderId: Int, customerId: Int): Future[Seq[OrderItem]] = {
       val getItemsOfCustomersOrderByIdAction = {
         for {
-          o <- OrderCRUD.dataTable if o.id === orderId && o.customerId === customerId
-          i <- dataTable if i.orderId === o.id
+          i <- dataTable
+          o <- i.order if o.id === orderId && o.customerId === customerId
         } yield i
       }.result
       database.run(getItemsOfCustomersOrderByIdAction)
