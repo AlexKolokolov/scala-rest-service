@@ -23,7 +23,7 @@ object Server extends App with SwaggerSite {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val shopRestController = new RestController with PostgresDatabase
+  val shopRestController = new RestController with H2Database
   val swagger = new SwaggerDocService(system)
 
   val routes = Route {

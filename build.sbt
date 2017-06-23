@@ -55,4 +55,4 @@ liquibasePassword := ""
 
 liquibaseDriver   := "org.h2.Driver"
 
-liquibaseUrl      := "jdbc:h2:./h2db/work"
+liquibaseUrl      := "jdbc:h2:file:./h2db/work"
