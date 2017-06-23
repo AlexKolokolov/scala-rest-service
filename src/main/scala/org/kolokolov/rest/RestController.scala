@@ -87,7 +87,7 @@ class RestController extends JsonSupport {
               val customerSaving = customerService.addNewCustomer(customer)
               onSuccess(customerSaving) { newId =>
                 extractUri { uri =>
-                  respondWithHeader(Location(uri + "/" + newId)) {
+                  respondWithHeader(Location((uri.path / newId.toString).toString)) {
                     complete(StatusCodes.Created, Customer(name, newId))
                   }
                 }

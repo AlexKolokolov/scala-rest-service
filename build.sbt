@@ -15,7 +15,7 @@ libraryDependencies ++= Seq("org.slf4j" % "slf4j-api" % "1.7.25",
 libraryDependencies ++= Seq("com.typesafe.slick" %% "slick" % "3.2.0",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.2.0")
 
-libraryDependencies += "com.h2database" % "h2" % "1.4.194" % "test"
+libraryDependencies += "com.h2database" % "h2" % "1.4.194"
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1212"
 
@@ -39,20 +39,20 @@ import com.github.sbtliquibase.SbtLiquibase
 
 enablePlugins(SbtLiquibase)
 
-liquibaseUsername := "postgres"
-
-liquibasePassword := "q1"
-
-liquibaseDriver   := "org.postgresql.Driver"
-
-liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
+//liquibaseUsername := "postgres"
+//
+//liquibasePassword := "q1"
+//
+//liquibaseDriver   := "org.postgresql.Driver"
+//
+//liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
 
 liquibaseChangelog := new java.io.File("src/main/resources/liquibase/changelog.xml")
 
-//liquibaseUsername := ""
-//
-//liquibasePassword := ""
-//
-//liquibaseDriver   := "org.h2.Driver"
-//
-//liquibaseUrl      := "jdbc:h2:mem:work"
+liquibaseUsername := ""
+
+liquibasePassword := ""
+
+liquibaseDriver   := "org.h2.Driver"
+
+liquibaseUrl      := "jdbc:h2:./h2db/work"

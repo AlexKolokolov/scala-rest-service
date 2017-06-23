@@ -2,3 +2,4 @@ target
 *.class
 .idea
 logs
+h2db
