@@ -47,7 +47,7 @@ class RestControllerTest extends AsyncFunSuite
     (stubOrderService.getCustomersOrderById _).when(1,1).returns(Future(Some(order1)))
     (stubOrderService.getOrdersByCustomerId _).when(1).returns(Future(Seq(order1,order2)))
 
-    val controller = new RestController(system) with H2Database {
+    val controller = new RestController with H2Database {
       override lazy val customerService = stubCustomerService
       override lazy val orderService = stubOrderService
     }
@@ -60,7 +60,7 @@ class RestControllerTest extends AsyncFunSuite
     (stubCategoryService.getAllCategories _).when().returns(Future(Seq(category1,category2)))
     (stubCategoryService.getCategoryById _).when(1).returns(Future(Some(category1)))
 
-    val controller = new RestController(system) with H2Database {
+    val controller = new RestController with H2Database {
       override lazy val productCategoryService = stubCategoryService
     }
     controller.routes

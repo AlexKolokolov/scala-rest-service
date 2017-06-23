@@ -27,7 +27,7 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV
 
 libraryDependencies += "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion
 
-libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0"
+libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test"
 
 libraryDependencies += "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.9.1"
 
@@ -39,20 +39,20 @@ import com.github.sbtliquibase.SbtLiquibase
 
 enablePlugins(SbtLiquibase)
 
-liquibaseUsername := "postgres"
-
-liquibasePassword := "q1"
-
-liquibaseDriver   := "org.postgresql.Driver"
-
-liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
+//liquibaseUsername := "postgres"
+//
+//liquibasePassword := "q1"
+//
+//liquibaseDriver   := "org.postgresql.Driver"
+//
+//liquibaseUrl      := "jdbc:postgresql://localhost:5432/rest_service"
 
 liquibaseChangelog := new java.io.File("src/main/resources/liquibase/changelog.xml")
 
-//liquibaseUsername := ""
-//
-//liquibasePassword := ""
-//
-//liquibaseDriver   := "org.h2.Driver"
-//
-//liquibaseUrl      := "jdbc:h2:mem:work"
+liquibaseUsername := ""
+
+liquibasePassword := ""
+
+liquibaseDriver   := "org.h2.Driver"
+
+liquibaseUrl      := "jdbc:h2:file:./h2db/work"

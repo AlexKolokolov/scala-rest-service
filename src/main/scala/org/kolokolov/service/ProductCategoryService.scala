@@ -9,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
   * Created by Kolokolov on 10.05.2017.
   */
-class ProductCategoryService(override val profile: JdbcProfile)(implicit val ec: ExecutionContext) extends ProductCategoryCRUDModule with DatabaseProfile {
+class ProductCategoryService(override val profile: JdbcProfile) extends ProductCategoryCRUDModule with DatabaseProfile {
 
   def getAllCategories: Future[Seq[ProductCategory]] = ProductCategoryCRUD.getAll
   def getCategoryById(id: Int): Future[Option[ProductCategory]] = ProductCategoryCRUD.getById(id)
